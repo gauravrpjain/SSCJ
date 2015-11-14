@@ -2,7 +2,7 @@ clear all
 clc
 %% QPSK MODULATION%%
 N = 10^2; % number of symbols
-Es_N0_dB = [0:12]; % multiple Eb/N0 values
+Es_N0_dB = 0:1:12; % multiple Eb/N0 values
 
 %% Spreading%%
 B=1;
