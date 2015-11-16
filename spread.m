@@ -45,6 +45,49 @@ subplot(3,1,3)
 stem(ks)
 title('Kasami-sequence');
 
+
+
+for i=1:G
+   if ks(i)==0
+       ks1(i)= -1;
+   else
+       ks1(i) = 1;
+   end
+    r(i)=ks1(i)*ks1(i); 
+end
+figure(2);
+subplot(2,1,1)
+plot(r)
+title('Auto-Correlation')
+hold on;
+for i=1:G-1
+    ks2(i)=ks1(i+1);
+end
+ks2(G) = ks1(1);
+ks1_noise = awgn(ks,3);
+ks2_noise = awgn(ks2,3);
+for i=1:G
+    cross_corr(i) = ks1(i)*ks2(i);
+    r_noise(i) = ks1(i)*ks1_noise(i);
+    cross_corr_noise(i) = ks1(i)*ks2_noise(i);
+end
+figure(2);
+subplot(2,1,2)
+plot(cross_corr)
+title('Cross-Correlation')
+hold on;
+figure(3);
+subplot(2,1,2)
+plot(cross_corr_noise)
+title('Cross-Correlation with noise')
+hold on;
+subplot(2,1,1)
+plot(r_noise)
+title('Auto-Correlation with noise')
+grid on;
+
+
+
 SNR = -2:1:12;
 data_length = 1e6;
 data_inr = 2*(rand(1,data_length/2)>0.5)-1;
@@ -130,7 +173,7 @@ for ii=1:1:length(SNR)
     prob1_wtspread(ii) = err/(no_bits);
 end
 SNR = -2:1:12;
-figure(2);
+figure(4);
 semilogy(SNR,prob1);
 grid on;  
 hold on
@@ -144,3 +187,10 @@ xlabel('Signal to noise ratio');
 ylabel('Bit error rate');   
 grid on;
 
+figure(5);
+psd = abs(ch_coeff);
+subplot(1,1,1);
+plot(psd);
+title('Power Delay Profile');
+ylabel('Power');
+grid on;
